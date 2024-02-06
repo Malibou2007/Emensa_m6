@@ -3,7 +3,7 @@
 @section("title", "Ihre E-Mensa")
 
 @section("Logo")
-    <img src="{{ Vite::asset('resources/images/logo-FH.png') }}" class="logopic" alt="Fh-Logo">
+    <a class="navbar-brand" style="margin-right: 2rem;" href="{{ url('/') }}">Emensa</a>
 @endsection
 
 @section("Navigation")
@@ -13,7 +13,7 @@
 @section("Login")
         <form action="{{ route('logout') }}" method="post">
             @csrf
-            <button type="submit" class="Text" style="color: white;">Logout</button>
+            <button type="submit" class="button_def" class="Text" style=" margin-left: -1rem; margin-right: 2rem; color: white;">Logout</button>
         </form>
 @endsection
 
@@ -71,6 +71,104 @@
         </tbody>
     </table>
 @endsection
+
+@section("Bewertungen")
+    <div class="section-container">
+        <h2>Deine Bewertungen</h2>
+
+        <table class="table_common">
+            <thead>
+            <tr>
+                <th>Gericht</th>
+                <th>Bewertung</th>
+                <th>Sternebewertung</th>
+                <th>Erfasst am</th>
+                <th>Aktionen</th> <!-- New column for actions -->
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($bewertungen as $bewertung)
+                <tr>
+                    <td>{{ $bewertung->meal->name }}</td>
+                    <td>{{ $bewertung->bewertung }}</td>
+                    <td>{{ $bewertung->sterne_bewertung }}</td>
+                    <td>{{ $bewertung->erfasst_am }}</td>
+                    <td>
+                        @if(auth()->user()->admin)
+                            @if($bewertung->adminapproved)
+                                <p>{{ $bewertung->user->name }}</p>
+                                <form action="{{ route('reacceptBewertung', ['id' => $bewertung->id]) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="button_def_grey" style="margin-left: 0; margin-right: 2rem;">Akzeptiert</button>
+                                </form>
+                            @else
+                                <p>{{ $bewertung->user->name }}</p>
+                                <form action="{{ route('acceptBewertung', ['id' => $bewertung->id]) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="button_def" style="margin-left: 0; margin-right: 2rem; color: white;">Akzeptieren</button>
+                                </form>
+                            @endif
+                        @endif
+                        <form action="{{ route('deleteBewertung', ['id' => $bewertung->id]) }}" method="post">
+                            @csrf
+                            <button type="submit" class="button_def" style="margin-left: 0; margin-right: 2rem; color: white;">Löschen</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+
+            </tbody>
+        </table>
+    </div>
+@endsection
+
+
+
+
+@section("content")
+    <h2>Deine Wunschgerichte</h2>
+    <table class="table_wunschgerichte">
+        <tbody>
+        @if(auth()->user()->admin)
+            <!-- Display all Wunschgerichte for admin users -->
+            @foreach(App\Models\Wunschgericht::all() as $wunschgericht)
+                <tr>
+                    <td>Name:</td>
+                    <td>{{ $wunschgericht->name }}</td>
+                    <td>Beschreibung:</td>
+                    <td>{{ $wunschgericht->beschreibung }}</td>
+                    <td>Autor:</td>
+                    <td>{{ $wunschgericht->autor }}</td>
+                    <td>
+                        <form action="{{ route('deleteWunschgericht', ['id' => $wunschgericht->id]) }}" method="post">
+                            @csrf
+                            <button type="submit" class="button_def" style="margin-left: 0; margin-right: 2rem; color: white;">Löschen</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        @else
+            <!-- Display only the user's Wunschgerichte for non-admin users -->
+            @foreach(auth()->user()->wunschgerichte as $wunschgericht)
+                <tr>
+                    <td>Name:</td>
+                    <td>{{ $wunschgericht->name }}</td>
+                    <td>Beschreibung:</td>
+                    <td>{{ $wunschgericht->beschreibung }}</td>
+                    <td>
+                        <form action="{{ route('deleteWunschgericht', ['id' => $wunschgericht->id]) }}" method="post">
+                            @csrf
+                            <button type="submit" class="button_def" style="margin-left: 0; margin-right: 2rem; color: white;">Löschen</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+        </tbody>
+    </table>
+@endsection
+
+
 
 @section("Footer")
     <div class="footer">

@@ -7,9 +7,8 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use function Laravel\Prompts\table;
 
 
 class LoginController extends Controller
@@ -25,7 +24,9 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        sendFailedLoginResponse as protected sendCustomFailedLoginResponse;
+    }
 
     /**
      * Where to redirect users after login.
@@ -44,27 +45,28 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function authenticate(Request $request)
+    public function authenticate(Request $request) : RedirectResponse
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
-        if (!Auth::attempt($credentials)) {
-            $user = User::whereEmail($request->input('email'))->first();
-
-            if ($user) {
-                $user->anzahlfehler += 1;
-                $user->letzterfehler = now();
-                $user->save();
-                return redirect('login')->withErrors(['password' => 'Invalid Passwort']);
-            }
-
-            return redirect('login')->withErrors(['email' => 'Invalid Email']);
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('dashboard');
         }
-        return redirect()->intended('dashboard');
+
+        $user = User::whereEmail($request->input('email'))->first();
+
+        if ($user) {
+            $user->anzahlfehler += 1;
+            $user->letzterfehler = now();
+            $user->save();
+            return back()->withErrors(['password' => 'Invalid Passwort']);
+            }
+        return back()->withErrors(['email' => 'Invalid Email']);
     }
-
-
-
     protected function authenticated(Request $request, $user): \Illuminate\Http\RedirectResponse
     {
         $user->letzteanmeldung = now();
@@ -72,5 +74,28 @@ class LoginController extends Controller
         $user->save();
 
         return redirect()->intended($this->redirectPath());
+    }
+
+    /**
+     * Get the failed login response instance.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        $user = User::whereEmail($request->input('email'))->first();
+
+        if ($user) {
+            $user->anzahlfehler += 1;
+            $user->letzterfehler = now();
+            $user->save();
+
+            return back()->withErrors(['password' => 'Invalid Password']);
+        }
+
+        return back()->withErrors(['email' => 'Invalid Email']);
     }
 }

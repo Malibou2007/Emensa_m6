@@ -47,5 +47,11 @@ class WunschgerichtController extends Controller
             return redirect('/login')->with('error', 'Sie müssen eingeloggt sein, um ein Wunschgericht einzureichen.');
         }
     }
+    public function destroy(Request $request)
+    {
+        $wunschgericht = Wunschgericht::findOrFail($request->input('id'));
+        $wunschgericht->delete();
 
+        return redirect('/profil')->with('success', 'Wunschgericht erfolgreich gelöscht');
+    }
 }

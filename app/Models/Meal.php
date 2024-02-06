@@ -49,4 +49,43 @@ class Meal extends Model
     {
         return Meal::count();
     }
+    public function bewertung()
+    {
+        return $this->hasMany(Bewertung::class, 'gericht_id', 'id');
+    }
+    public function getPreisinternAttribute($value)
+    {return number_format($value, 2);}
+    public function setPreisinternAttribute($value)
+    {$this->attributes['preisintern'] = round($value, 2);}
+    public function getPreisexternAttribute($value)
+    {return number_format($value, 2);}
+    public function setPreisexternAttribute($value)
+    {$this->attributes['preisextern'] = round($value, 2);}
+
+    public function getVegetarischAttribute($value)
+    {
+        return $this->formatiereBoolWert($value);
+    }
+    public function setVegetarischAttribute($value)
+    {
+        $this->attributes['vegetarisch'] = $this->konvertiereZuBool($value);
+    }
+    public function getVeganAttribute($value)
+    {
+        return $this->formatiereBoolWert($value);
+    }
+    public function setVeganAttribute($value)
+    {
+        $this->attributes['vegan'] = $this->konvertiereZuBool($value);
+    }
+    private function formatiereBoolWert($value)
+    {
+        return $value ? 'Yes' : 'No';
+    }
+    private function konvertiereZuBool($value)
+    {
+        $value = str_replace(" ", "", $value);
+        return in_array(strtolower(trim($value)), ['yes', 'ja']);
+    }
 }
+

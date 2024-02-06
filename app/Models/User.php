@@ -80,4 +80,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function wunschgerichte()
+    {
+        return $this->hasMany(Wunschgericht::class, 'autormail', 'email');
+    }
+    public function bewertungen()
+    {
+        return $this->hasMany(Bewertung::class, 'user_id', 'id');
+    }
+
 }

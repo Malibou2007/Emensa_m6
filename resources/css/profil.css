@@ -2,3 +2,134 @@
     margin-top: 2rem;
     border: none
 }
+.table_wunschgerichte {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table_wunschgerichte tr {
+    border: 1px solid #ddd;
+}
+
+.table_wunschgerichte td {
+    padding: 8px;
+}
+
+@media only screen and (max-width: 600px) {
+    .bewertbar {
+        flex-direction: column; /* Change to column layout for small screens */
+        align-items: center; /* Center elements on small screens */
+    }
+
+    .meal_img {
+        width: 100%; /* Set the width to 100% for responsiveness */
+        height: auto; /* Maintain the aspect ratio */
+        border-radius: 1rem;
+        transition: all 0.5s ease;
+    }
+
+    .bewertung-form {
+        margin-top: 20px; /* Added margin at the top */
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center elements in the form */
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+        width: 80%; /* Adjust the width of form elements */
+    }
+
+    input, select {
+        width: 100%;
+        padding: 0.5rem;
+        margin: 0.2rem 0;
+        box-sizing: border-box;
+    }
+
+    .button_pro {
+        width: 80%; /* Adjust the width of the button */
+        margin-top: 10px; /* Add some top margin for spacing */
+    }
+}
+
+
+.meal_img {
+    width: 12rem;
+    height: 12rem;
+    object-fit: cover;
+    border-radius: 1rem;
+    transition: all 0.5s ease;
+}
+
+.bewertbar {
+    display: flex;
+    align-items: flex-start;
+}
+
+.bewertung-form {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column; /* Änderung auf Spaltenlayout */
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0.2rem 0;
+    box-sizing: border-box;
+}
+
+.button_pro {
+    width: 100%;
+    background-color: rgba(64, 190, 170, 1);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1); /* Schwarzer Schatten nach unten */
+}
+
+.button_pro:hover {
+    background-color: rgb(38, 114, 102);
+}
+
+.button_pro:active {
+    background-color: rgb(38, 114, 102);
+    transform: translateY(4px);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.4); /* Schatten verschwindet beim Drücken */
+}
+.Bewertungen {
+    width: 70%;
+    margin: auto;
+    display: flex;
+    flex-direction: column; /* Change the layout to column */
+}
+
+/* Add the styles for the table_common class */
+.table_common {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table_common th, .table_common td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+/* Add any additional styles you want for the Bewertungen section */
+
+
+
+
+
+
+

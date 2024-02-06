@@ -22,9 +22,6 @@ table, td{
     border: 1px solid black;
     border-radius: 5px;
 }
-.tablecentered{
-    text-align: center;
-}
 .überschrift{
     margin-top: 35px;
 }
@@ -157,8 +154,10 @@ table, td{
 .price {
     font-size: 1rem;
 }
-
-
+.meal_logo{
+    pointer-events: none;
+    position: relative;
+}
 .meal_logo_blur {
     position: absolute;
     top: 0;
@@ -177,12 +176,16 @@ table, td{
 }
 
 .meal_img {
-    width: 20rem;
-    height: 20rem;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     border-radius: 1rem;
     transition: all 1s ease;
     z-index: 2;
+}
+
+.meal_container:hover .ratingss {
+    opacity: 1;
 }
 
 .meal_container:hover {
@@ -199,3 +202,106 @@ table, td{
 .meal_container:hover .meal_info {
     opacity: 1;
 }
+.bewertungsbutton{
+    margin: 1rem 0 0 0;
+    width:90%;
+    padding: 0;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 1);
+    background: rgba(255, 255, 255, 0.5);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    font-size: large;
+    z-index: 4;
+}
+.bewertungsbutton:hover{
+    background: rgba(255, 255, 255, 0.2);
+}
+.bewertungsbutton:active {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(4px);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 1);
+    transition: transform ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+.table_common{
+    width: 100%;
+    margin-top: 20px;
+    overflow-x: auto; /* Add horizontal scroll for small screens */
+}
+.Ratings{
+    width: 100%;
+}
+.ratingss {
+    position: absolute;
+    top: 3rem;
+    left: 8rem;
+    z-index: 3; /* Adjust the z-index as needed */
+    padding: 0.5rem;
+    color: white;
+    opacity: 0;
+    transition: all 1s ease;
+}
+.ratings-table {
+    width: 100%;
+    margin-top: 20px;
+    overflow-x: auto; /* Add horizontal scroll for small screens */
+}
+
+.ratings-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ratings-table th, .ratings-table td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+.ratings-table th {
+    background-color: #f2f2f2;
+}
+.average_rating,.no_rating{
+    z-index: 5; /* or a higher value if needed */
+}
+
+
+@media only screen and (max-width: 600px) {
+    .ratings-table th, .ratings-table td {
+        font-size: smaller; /* Adjust font size for small screens */
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    /* Navigation anpassen */
+    .Header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .Login {
+        margin: 1rem 0;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .Logo {
+        display: none;
+    }
+
+    .Navigation {
+        width: 100%;
+        margin: 1rem 0;
+    }
+
+    .Meals {
+        flex-direction: column; /* Eine Spalte auf kleinen Bildschirmen */
+    }
+
+    .meal_container {
+        width: 100%; /* Vollständige Breite auf kleinen Bildschirmen */
+    }
+}
+

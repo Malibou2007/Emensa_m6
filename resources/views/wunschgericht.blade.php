@@ -32,7 +32,7 @@
 
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    <button id="submitGericht" type="submit" name="submitGericht" value="Wunsch abschicken">
+                                    <button class="button_def" id="submitGericht" type="submit" name="submitGericht" value="Wunsch abschicken">
                                         Wunsch abschicken
                                     </button>
                                 </div>

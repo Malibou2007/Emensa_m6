@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield("title")</title>
     @vite('resources/css/emensa.css')
     @vite('resources/css/layout.css')
@@ -26,6 +27,9 @@
         </div>
         <div class="Meals" id="Speisen">
             @yield("Meals")
+        </div>
+        <div class="Ratings">
+            @yield("Ratings")
         </div>
         <div class="Numbers" id="Numbers">
             @yield("Numbers")

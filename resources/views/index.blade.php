@@ -17,13 +17,13 @@
 
 @section("Login")
     @auth
-            <form action="{{ route('profil') }}" method="post">
-                @csrf
-                <button type="submit" class="Text_profil" style="color: white;">{{auth()->user()->name}}</button>
-            </form>
+        <form action="{{ route('profil') }}" method="post">
+            @csrf
+            <button type="submit" class="button_def" style=" margin-left: -2rem; margin-right: 2rem; color: white;">{{auth()->user()->name}}</button>
+        </form>
     @else
         @if (Route::has('login'))
-            <a class="Text" href="{{ route('login') }}">{{ __('Login') }}</a>
+            <a class="Text" style="margin-right: 5rem;" href="{{ route('login') }}">{{ __('Login') }}</a>
         @endif
     @endauth
 @endsection
@@ -43,56 +43,62 @@
 @endsection
 
 @section("Meals")
-    @foreach($randomMeals as $meal)
+    @foreach($randomMeals as $key => $meal)
         <div class="meal_container">
-            @if($meal->bildname)
-                <div class="meal_logo">
-                    <img class="meal_img" src="{{ Vite::asset('resources/images/gerichte/' . $meal->bildname) }}"
-                         alt={{$meal->name}}>
-                </div>
+            <div class="meal_logo">
+                @if($meal->bildname)
+                    <img class="meal_img" src="{{ Vite::asset('resources/images/gerichte/' . $meal->bildname) }}" alt="{{ $meal->name }}">
+                @else
+                    <img class="meal_img" src="{{ Vite::asset('resources/images/gerichte/00_image_missing.jpg') }}" alt="{{ $meal->name }}">
+                @endif
                 <div class="meal_logo_blur">
-                    <img class="meal_img_blur" src="{{ Vite::asset('resources/images/gerichte/' . $meal->bildname) }}"
-                         alt={{$meal->name}}>
-                </div>
-                <div class="meal_info">
-                    <h3 class="meal_name">{{ $meal->name }}</h3>
-                    <p class="meal_des">{{ $meal->beschreibung }}</p>
-                    <div class="prices">
-                        <span class="price">Intern: {{ number_format($meal->preisintern, 2) }}€</span>
-                        <span class="price">Extern: {{ number_format($meal->preisextern, 2) }}€</span>
-                    </div>
-                    @if ($meal->allergene->count() > 0)
-                        <p class="meal_allergen">Allergen
-                            Codes: {{ implode(', ', $meal->allergene->pluck('code')->toArray()) }}</p>
+                    @if($meal->bildname)
+                        <img class="meal_img_blur" src="{{ Vite::asset('resources/images/gerichte/' . $meal->bildname) }}" alt="{{ $meal->name }}">
+                    @else
+                        <img class="meal_img_blur" src="{{ Vite::asset('resources/images/gerichte/00_image_missing.jpg') }}" alt="{{ $meal->name }}">
                     @endif
                 </div>
-            @else
-                <div class="meal_logo">
-                    <img class="meal_img" src="{{ Vite::asset('resources/images/gerichte/00_image_missing.jpg') }}"
-                         alt={{$meal->name}}>
-                </div>
-                <div class="meal_info">
-                    <h3 class="meal_name">{{ $meal->name }}</h3>
-                    <p class="meal_des">{{ $meal->beschreibung }}</p>
-                    <div class="prices">
-                        <span class="price">Intern: {{ number_format($meal->preisintern, 2) }}€</span>
-                        <span class="price">Extern: {{ number_format($meal->preisextern, 2) }}€</span>
-                    </div>
-                    @if ($meal->allergene->count() > 0)
-                        <p class="meal_allergen">Allergen
-                            Codes: {{ implode(', ', $meal->allergene->pluck('code')->toArray()) }}</p>
+                <!-- Display rating next to the image -->
+                <div class="ratingss">
+                    @if(isset($bewertungenProzent[$key]))
+                        <p class="average_rating">
+                            Rating: {{ number_format($bewertungenProzent[$key], 2)}}%
+                        </p>
+                    @else
+                        <p class="no_rating">Noch keine Bewertungen vorhanden</p>
                     @endif
                 </div>
-            @endif
+            </div>
+            <div class="meal_info">
+                <h3 class="meal_name">{{ $meal->name }}</h3>
+                <p class="meal_des">{{ $meal->beschreibung }}</p>
+                <div class="prices">
+                    <span class="price">Intern: {{ number_format($meal->preisintern, 2) }}€</span>
+                    <span class="price">Extern: {{ number_format($meal->preisextern, 2) }}€</span>
+                </div>
+                @auth
+                    <form method="POST" action="{{ route('bewertung', ['gerichtid' => $meal->id]) }}">
+                        @csrf
+                        <button type="submit" class="bewertungsbutton">
+                            bewerten
+                        </button>
+                    </form>
+                @endauth
+                @if ($meal->allergene->count() > 0)
+                    <p class="meal_allergen">Allergen Codes: {{ implode(', ', $meal->allergene->pluck('code')->toArray()) }}</p>
+                @endif
+            </div>
         </div>
     @endforeach
+
     <div style="display: flex; justify-content: space-between; margin: 1rem; align-items: center; width: 81%;">
         <div class="allergen_legend">
             <h2>Allergenlegende:</h2>
             <p>
                 @foreach($allergenLegend as $legend)
                     @if(in_array($legend->code, $allergenLegendmeals))
-                        <span class="fett">{{ $legend->code }}</span> = {{ $legend->name }}@if(!$loop->last)
+                        <span class="fett">{{ $legend->code }}</span> = {{ $legend->name }}
+                        @if(!$loop->last)
                             ,
                         @endif
                     @endif
@@ -102,9 +108,47 @@
         <form method="GET" action="{{ route('wunschgericht') }}">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div>
-                <button type="submit">wunschgericht äussern</button>
+                <button class="button_def" type="submit" style="margin-left: 10rem; margin-top: 2rem; color: white;">wunschgericht äussern</button>
             </div>
         </form>
+@endsection
+
+@section("Ratings")
+        <div class="ratings-table">
+            <h2 class="überschrift">Meinungen unserer Gäste</h2>
+            <table class="tablecentered">
+                <thead>
+                <tr>
+                    <th>Gericht</th>
+                    <th>Bewertung</th>
+                    <th>Sterne</th>
+                    <th>Erfasst am</th>
+                    <th>Autor</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($bewertungen as $bewertungCollection)
+                    @foreach($bewertungCollection as $bewertung)
+                        @if($bewertung->adminapproved)
+                            <tr>
+                                <td>{{ $bewertung->meal->name }}</td>
+                                <td>{{ $bewertung->bewertung }}</td>
+                                <td>{{ $bewertung->sterne_bewertung }}</td>
+                                <td>{{ $bewertung->erfasst_am }}</td>
+                                <td>{{ $bewertung->user->name }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+            <form method="GET" action="{{ route('bewertungen') }}">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div>
+                    <button class="button_def" type="submit" style="margin:1rem 0 0 0; color: white;">Alle Bewertungen</button>
+                </div>
+            </form>
 @endsection
 
 @section("Numbers")

@@ -4,6 +4,85 @@ html{
 body{
     background-color: rgba(64,190,170,255);
 }
+@media only screen and (max-width: 600px) {
+    .Header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .Login {
+        margin: 1rem 0;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .Logo {
+        display: none;
+    }
+
+    .Navigation {
+        width: 100%;
+        margin: 1rem 0;
+    }
+
+    .button_def {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .Main,
+    .content,
+    .Ratings{
+        width: 100%;
+    }
+
+    .bewertbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .meal_img {
+        width: 100%;
+        height: auto;
+        border-radius: 1rem;
+        transition: all 0.5s ease;
+    }
+
+    .bewertung-form {
+        margin-top: 20px;
+        align-items: center;
+    }
+
+    .form-group {
+        width: 80%;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 0.5rem;
+        margin: 0.2rem 0;
+        box-sizing: border-box;
+    }
+
+    .button_pro {
+        width: 80%;
+        margin-top: 10px;
+    }
+    .footer {
+        height: auto;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer > div {
+        display: none;
+    }
+
+    .footer > div:nth-child(2) {
+        display: flex;
+    }
+}
 .Page{
     display: block;
     justify-content: center;
@@ -19,10 +98,20 @@ body{
     height: 90px;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center; /* Center the content horizontally */
     padding-top: 30px;
 }
+.navbar-brand {
+    color: rgba(64, 190, 170, 255);
+    font-weight: bold;
+    font-size: x-large;
+    text-decoration: none;
+    transition: all 0.5s ease-in;
+}
 
+.navbar-brand:hover {
+    text-decoration: underline;
+}
 .Login {
     height: 50%;
     margin-left: 2rem;
@@ -36,8 +125,15 @@ body{
 .Logo {
     height: 50%;
     width: 10%;
-    margin-left: 2.5%;
-    margin-right: 2.5%;
+    margin-left: auto;  /* Auto margin on the left side */
+    margin-right: auto; /* Auto margin on the right side */
+}
+
+.logopic {
+    display: block;    /* Ensure the image behaves as a block element */
+    margin: 0 auto;    /* Auto margins to center the image horizontally */
+    max-width: 100%;
+    max-height: 100%;
 }
 .Navigation {
     width: 70%;
@@ -47,13 +143,8 @@ body{
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-
 }
 
-.logopic {
-    max-width: 100%;
-    max-height: 100%;
-}
 .Text {
     margin-left: 1rem; /* Verringern des Abstands */
     margin-top: 0.5rem;
@@ -82,32 +173,57 @@ body{
     height:1px;
     background-color: rgba(64,190,170,255);
 }
-.Main {
+.Bewertungen,.content,.Main {
     width: 70%;
     margin: auto;
     display: flex;
     flex-direction: column; /* Änderung der Ausrichtung auf vertikal */
 }
-button{
-    margin-top: 10px;
-    margin-left: 80%;
-    padding: 5px 10px;
-    border-radius: 10px;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 1);
-    background-color: rgba(64,190,170,255);
-    color: white;
+.button_def,.button_def_grey{
+    width: 100%;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
     cursor: pointer;
-    transition: background-color 0.5s;
-    font-size: larger;
+    font-size: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    transition: background-color 0.3s, box-shadow 0.3s;}
+.button_def_grey{
+    background-color: rgba(255, 255, 255, 200);
 }
-button:hover{
-    background-color: rgb(38,114,102);
+.button_def {
+    background-color: rgba(64, 190, 170, 255);
 }
-button:active{
-    background-color: rgb(38,114,102);
+
+.button_def:hover,.button_def_grey:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+}
+
+.button_def:active,.button_def_grey:active {
     transform: translateY(4px);
-    box-shadow: 0 0 0 rgba(0, 0, 0, 1);
-    transition: transform ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+.button_def_grey:hover {
+    background-color: rgba(155, 155, 155, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+}
+
+.button_def_grey:active {
+    background-color: rgba(155, 155, 155, 1);
+    transform: translateY(4px);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+.button_def:hover {
+    background-color: rgb(38, 114, 102);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+}
+
+.button_def:active {
+    background-color: rgb(38, 114, 102);
+    transform: translateY(4px);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 .footer{
     height:30px;
